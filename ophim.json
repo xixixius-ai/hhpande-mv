@@ -1,0 +1,50 @@
+{
+  "id": "hhpanda-thuyet-minh",
+  "name": "HHPanda - Thuyet Minh",
+  "url": "https://raw.githubusercontent.com/xixixius-ai/hhpande-mv/refs/heads/main/ophim",
+  "color": "#004444",
+  "image": {
+    "url": "https://hhpanda.st/wp-content/uploads/2024/10/logo.webp",
+    "type": "cover"
+  },
+  "description": "Phim hoat hinh 3D Trung Quoc thuyet minh chat luong cao tu HHPanda.st",
+  "grid_number": 3,
+  "channels": [
+    {
+      "id": "the-gioi-hoan-my",
+      "name": "Tập 266/286 [4K]\nThế Giới Hoàn Mỹ\n\nPerfect World",
+      "description": "",
+      "image": {
+        "url": "https://hhpanda.st/wp-content/uploads/2024/10/the-gioi-hoan-my-256-300x450.webp",
+        "type": "cover",
+        "width": 480,
+        "height": 640
+      },
+      "type": "playlist",
+      "display": "text-below",
+      "label": {
+        "text": "Trending",
+        "position": "top-left",
+        "color": "#35ba8b",
+        "text_color": "#ffffff"
+      },
+      "remote_data": {
+        "url": "https://raw.githubusercontent.com/xixixius-ai/hhpande-mv/refs/heads/main/ophim/detail/the-gioi-hoan-my.json"
+      },
+      "enable_detail": true
+    }
+  ],
+  "sorts": [
+    {
+      "text": "Moi nhat",
+      "type": "radio",
+      "url": "https://raw.githubusercontent.com/xixixius-ai/hhpande-mv/refs/heads/main/ophim"
+    }
+  ],
+  "meta": {
+    "source": "https://hhpanda.st",
+    "total_items": 1,
+    "updated_at": "2026-04-29T16:15:58Z",
+    "version": "2.0"
+  }
+}
