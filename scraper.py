@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-HHPanda Scraper → MonPlayer JSON (v2.1)
+HHPanda Scraper → MonPlayer JSON (v2.2)
 Chiến lược stream URL:
   1. AJAX player.php → parse iframe/source → lấy m3u8/mp4 thật
   2. Fallback: giữ embed URL nếu không extract được direct stream
@@ -35,7 +35,7 @@ CONFIG = {
     "BASE_URL":     "https://hhpanda.st",
     "OUTPUT_DIR":   "ophim",
     "LIST_FILE":    "ophim.json",
-    "MAX_MOVIES":   5,
+    "MAX_MOVIES":   10,
     "MAX_EPISODES": 5,
     "TIMEOUT_NAV":  30000,
     "TIMEOUT_WAIT": 20000,
@@ -101,11 +101,18 @@ def _wait_for_cf(page, selector, timeout):
     page.wait_for_selector(selector, state="attached", timeout=timeout)
 
 
+def _clean_series_title(title: str) -> str:
+    """Remove episode info, quality tags from series title"""
+    # Remove patterns like "Tập 266/286 [4K]", "Full HD", "Vietsub", etc.
+    title = re.sub(r'\s*\[?\s*(Tập\s*\d+\.?\d*\/?\d*|Full\s*HD|4K|HD|Vietsub|Thuyết\s*minh|Perfect\s*World)\s*\]?\s*$', '', title, flags=re.I)
+    # Remove " | Perfect World" suffix
+    title = re.sub(r'\s*\|\s*.*$', '', title)
+    return title.strip()
+
+
 # ── AJAX Player Fetcher ───────────────────────────────────────────────────────
 def _fetch_player_ajax(context, post_id: str, chapter_st: str, sv: str, server_type: str) -> str | None:
-    """
-    Gọi AJAX endpoint player.php của hhpanda để lấy HTML chứa iframe/stream.
-    """
+    """Gọi AJAX endpoint player.php của hhpanda để lấy HTML chứa iframe/stream."""
     page = context.new_page()
     try:
         player_url = f"{CONFIG['BASE_URL']}/player/player.php"
@@ -136,15 +143,11 @@ def _fetch_player_ajax(context, post_id: str, chapter_st: str, sv: str, server_t
 
 
 def _parse_stream_from_html(html: str) -> dict | None:
-    """
-    Parse HTML response từ player.php để extract stream URL.
-    Ưu tiên: m3u8 > mp4 > iframe embed.
-    """
+    """Parse HTML response từ player.php để extract stream URL."""
     # 1. Tìm iframe src (ưu tiên số 1)
     iframe_match = re.search(r'<iframe[^>]+src=["\']([^"\']+)["\']', html, re.IGNORECASE)
     if iframe_match:
         src = iframe_match.group(1)
-        # Handle protocol-relative URL: //streamfree.vip/... → https://...
         if src.startswith('//'):
             src = 'https:' + src
         elif src.startswith('/'):
@@ -156,7 +159,7 @@ def _parse_stream_from_html(html: str) -> dict | None:
         else:
             return {"url": src, "type": "embed"}
     
-    # 2. Tìm <source> tag (jwplayer, video.js)
+    # 2. Tìm <source> tag
     source_match = re.search(
         r'<source[^>]+src=["\']([^"\']+\.(m3u8|mp4|webm)[^"\']*)["\']', 
         html, re.IGNORECASE
@@ -168,7 +171,7 @@ def _parse_stream_from_html(html: str) -> dict | None:
         vtype = "hls" if ".m3u8" in src else "mp4"
         return {"url": src, "type": vtype}
     
-    # 3. Tìm file: trong JS config (plyr, hls.js, custom player)
+    # 3. Tìm file: trong JS config
     js_match = re.search(
         r'''['"]?file['"]?\s*:\s*['"]([^'"]+\.(m3u8|mp4|webm)[^'"]*)['"]''', 
         html, re.IGNORECASE
@@ -185,43 +188,90 @@ def _parse_stream_from_html(html: str) -> dict | None:
 
 # ── Step 1: Most-viewed → movie list ──────────────────────────────────────────
 def get_trending_movies(page):
+    """Extract movie list từ trang /most-viewed với selector chính xác."""
     try:
         trending_url = f"{CONFIG['BASE_URL']}/most-viewed"
         page.goto(trending_url, wait_until="domcontentloaded", timeout=CONFIG["TIMEOUT_NAV"])
         _debug_page(page, "most-viewed")
-        _wait_for_cf(page, ".movie-item, .halim-item", CONFIG["TIMEOUT_WAIT"])
+        _wait_for_cf(page, ".halim-item, article.thumb", CONFIG["TIMEOUT_WAIT"])
 
         movies = page.evaluate("""() => {
             const results = [];
-            const selectors = ['.movie-item', '.halim-item', '.film-item', '#main-contents .item'];
-            let items = [];
-            for (const sel of selectors) {
-                items = document.querySelectorAll(sel);
-                if (items.length > 0) break;
-            }
+            const seen = new Set();
+            
+            // Selector chính xác cho hhpanda /most-viewed
+            const items = document.querySelectorAll('article.halim-item, article.thumb, div.halim-item');
+            
             for (const item of items) {
                 if (results.length >= 15) break;
-                const link = item.querySelector('a[href*="/watch-"], a[href*="/the-gioi-"], .film-title a, h3 a');
+                
+                // Tìm link series (ưu tiên href chứa slug series, không phải episode)
+                const link = item.querySelector('a.halim-thumb, a[href*="/the-gioi-"], a[href*="/tien-nghich"], a[href*="/dau-pha-"], a[href*="/pham-nhan-"]');
                 if (!link?.href) continue;
+                
                 const href = link.href;
-                const match = href.match(/\/watch-([^/]+)\//) || href.match(/\/([^/]+)$/);
-                const slug = match ? match[1].replace(/-tap-\d+.*$/, '').replace(/-sv\d+.*$/, '') : '';
-                if (!slug || slug.includes('search') || slug.includes('category')) continue;
-                const title = link.innerText.trim() || link.title || item.querySelector('.film-name, .halim-title')?.innerText || '';
-                let thumb = item.querySelector('img[data-src], img[data-original], img.film-poster-img, .film-poster img')?.dataset?.src || '';
+                
+                // Extract series slug
+                let slug = '';
+                if (href.includes('/watch-')) {
+                    // Episode URL: /watch-{slug}/tap-xxx → extract {slug}
+                    const match = href.match(/\/watch-([^/]+)\//);
+                    slug = match ? match[1] : '';
+                } else {
+                    // Series URL: /the-gioi-hoan-my
+                    const parts = href.split('/').filter(p => p);
+                    slug = parts[parts.length - 1];
+                }
+                
+                // Skip slug không hợp lệ
+                if (!slug || slug.length < 3 || slug.includes('search') || slug.includes('category') || slug.includes('page')) {
+                    continue;
+                }
+                
+                // Extract title: ưu tiên .entry-title, fallback .halim-title
+                const titleEl = item.querySelector('.entry-title, .halim-title, .film-name, h2, h3');
+                let title = titleEl?.innerText?.trim() || link.title || link.innerText?.trim() || '';
+                
+                // Clean title: loại bỏ episode info
+                title = title.replace(/\s*\[?\s*(Tập\s*\d+\.?\d*\/?\d*|Full\s*HD|4K|HD|Vietsub|Thuyết\s*minh|Perfect\s*World)\s*\]?/gi, '').trim();
+                title = title.replace(/\s*\|\s*.*$/g, '').trim();
+                
+                if (!title || title.length < 2) continue;
+                
+                // Extract thumbnail
+                let thumb = item.querySelector('img[data-src], img[data-original], img.film-poster-img')?.dataset?.src || '';
                 if (!thumb) thumb = item.querySelector('img')?.src || '';
-                if (thumb && !thumb.startsWith('http')) thumb = 'https://hhpanda.st' + thumb;
-                const badge = item.querySelector('.tick, .label, .badge, .halim-status')?.innerText.trim() || 'Trending';
-                results.push({ slug, title: title.replace(/Tập\s*\d+.*$/i, '').trim(), thumb, badge });
+                if (thumb && thumb.startsWith('/')) thumb = 'https://hhpanda.st' + thumb;
+                
+                // Extract badge
+                const badge = item.querySelector('.tick, .label, .badge, .status')?.innerText?.trim() || 'Trending';
+                
+                // Deduplicate
+                if (seen.has(slug)) continue;
+                seen.add(slug);
+                
+                results.push({ 
+                    slug, 
+                    title: _cleanTitle(title), 
+                    thumb, 
+                    badge: badge.replace(/\[|\]/g, '').trim()
+                });
             }
-            const seen = new Set();
-            return results.filter(m => {
-                if (seen.has(m.slug)) return false;
-                seen.add(m.slug);
-                return true;
-            }).slice(0, 10);
+            
+            function _cleanTitle(t) {
+                t = t.replace(/\s*\[?\s*(Tập\s*\d+\.?\d*\/?\d*|Full\s*HD|4K|HD|Vietsub|Thuyết\s*minh|Perfect\s*World)\s*\]?/gi, '').trim();
+                return t.replace(/\s*\|\s*.*$/g, '').trim();
+            }
+            
+            return results.slice(0, 10);
         }""")
+        
+        if not movies:
+            _debug_page(page, "no-movies-most-viewed")
+            logger.warning("   No movies extracted - check selectors")
+        
         return movies
+        
     except Exception as e:
         logger.error(f"Failed to get trending movies: {e}")
         _debug_page(page, "most-viewed-error")
@@ -230,19 +280,14 @@ def get_trending_movies(page):
 
 # ── Step 1b: Detail/Episode page → extract post_id + latest ep ────────────────
 def get_series_info_and_latest_ep(page, slug):
-    """
-    Vào trang episode bất kỳ của series để lấy:
-    - post_id (từ DoPostInfo script)
-    - latest episode URL (tap số cao nhất)
-    """
-    # Dùng episode 1 làm fallback (luôn tồn tại)
+    """Vào trang episode để lấy post_id từ DoPostInfo và latest episode."""
     sample_url = f"{CONFIG['BASE_URL']}/watch-{slug}/tap-1-sv1.html"
     
     try:
         _human_delay(300, 700)
         page.goto(sample_url, wait_until="domcontentloaded", timeout=CONFIG["TIMEOUT_NAV"])
         
-        # Nếu 404, thử redirect đến series page
+        # Fallback nếu 404
         if "404" in page.title().lower() or page.url != sample_url:
             series_url = f"{CONFIG['BASE_URL']}/{slug}"
             page.goto(series_url, wait_until="domcontentloaded", timeout=CONFIG["TIMEOUT_NAV"])
@@ -250,46 +295,46 @@ def get_series_info_and_latest_ep(page, slug):
         _debug_page(page, f"series-{slug}")
         _wait_for_cf(page, "#halim-list-server, .halim-episode", CONFIG["TIMEOUT_WAIT"])
 
-        info = page.evaluate(f"""() => {{
+        info = page.evaluate("""() => {
             // Lấy post_id từ script DoPostInfo (nguồn chính xác nhất)
             let post_id = null;
             const scripts = Array.from(document.scripts);
-            for (const script of scripts) {{
-                if (script.textContent && script.textContent.includes('DoPostInfo')) {{
+            for (const script of scripts) {
+                if (script.textContent && script.textContent.includes('DoPostInfo')) {
                     const match = script.textContent.match(/id:\\s*(\\d+)/);
-                    if (match) {{
+                    if (match) {
                         post_id = match[1];
                         break;
-                    }}
-                }}
-            }}
+                    }
+                }
+            }
             // Fallback: lấy từ data attribute
-            if (!post_id) {{
+            if (!post_id) {
                 const epLink = document.querySelector('a[data-post-id]');
                 if (epLink) post_id = epLink.getAttribute('data-post-id');
-            }}
+            }
             
             // Lấy danh sách episodes và tìm số tap cao nhất
             const episodes = [];
             const containers = document.querySelectorAll('#halim-list-server .halim-episode a, ul.halim-list-eps a');
-            for (const a of containers) {{
+            for (const a of containers) {
                 const href = a.href || '';
                 const epMatch = href.match(/tap-(\\d+)/);
                 const svMatch = href.match(/-sv(\\d+)/);
-                if (epMatch) {{
-                    episodes.push({{
+                if (epMatch) {
+                    episodes.push({
                         num: parseInt(epMatch[1]),
                         sv: svMatch ? parseInt(svMatch[1]) : 1,
                         href: href,
                         title: a.title || a.innerText.trim()
-                    }});
-                }}
-            }}
+                    });
+                }
+            }
             episodes.sort((a, b) => b.num - a.num);
             const latest = episodes[0] || null;
             
-            return {{ post_id, latest }};
-        }}""")
+            return { post_id, latest };
+        }""")
         
         if info["latest"]:
             logger.info(f"   Latest ep: tap-{info['latest']['num']} sv{info['latest']['sv']}")
@@ -305,30 +350,27 @@ def get_series_info_and_latest_ep(page, slug):
 
 # ── Step 2: Episode list from series page ─────────────────────────────────────
 def get_episodes(page, slug, post_id):
-    """
-    Lấy danh sách episodes từ #halim-list-server.
-    Handle duplicate #listsv-1 IDs cho Vietsub/Thuyết minh.
-    """
+    """Lấy danh sách episodes từ #halim-list-server, handle duplicate ID."""
     try:
         sample_url = f"{CONFIG['BASE_URL']}/watch-{slug}/tap-1-sv1.html"
         _human_delay(400, 800)
         page.goto(sample_url, wait_until="domcontentloaded", timeout=CONFIG["TIMEOUT_NAV"])
         _wait_for_cf(page, "#halim-list-server", CONFIG["TIMEOUT_WAIT"])
 
-        episodes = page.evaluate(f"""() => {{
+        episodes = page.evaluate("""() => {
             const results = [];
             const seen = new Set();
             
-            // Query từng server container riêng biệt để tránh duplicate ID
+            // Query từng server container riêng biệt để tránh duplicate ID #listsv-1
             const serverContainers = document.querySelectorAll('#halim-list-server > div.halim-server');
             
-            for (const container of serverContainers) {{
+            for (const container of serverContainers) {
                 const serverName = container.querySelector('.halim-server-name')?.innerText || '';
                 const isVietsub = serverName.toLowerCase().includes('vietsub');
                 const defaultSv = isVietsub ? 1 : 2;
                 
                 const links = container.querySelectorAll('ul.halim-list-eps a[data-post-id][data-ep]');
-                for (const a of links) {{
+                for (const a of links) {
                     const href = a.href || '';
                     const epMatch = href.match(/tap-(\\d+)/);
                     const svMatch = href.match(/-sv(\\d+)/);
@@ -336,26 +378,26 @@ def get_episodes(page, slug, post_id):
                     
                     const num = parseInt(epMatch[1]);
                     const sv = svMatch ? parseInt(svMatch[1]) : defaultSv;
-                    const key = `${{num}}-sv${{sv}}`;
+                    const key = `${num}-sv${sv}`;
                     
                     if (seen.has(key)) continue;
                     seen.add(key);
                     
-                    results.push({{
-                        name: `Tap ${{num}}`,
+                    results.push({
+                        name: `Tap ${num}`,
                         num: num,
                         sv: sv,
                         url: href,
                         post_id: a.getAttribute('data-post-id'),
                         ep_slug: a.getAttribute('data-ep'),
-                        title: a.title || `Tập ${{num}}`
-                    }});
-                }}
-            }}
+                        title: a.title || `Tập ${num}`
+                    });
+                }
+            }
             
             // Sort: episode number desc, then sv asc (Vietsub trước)
             return results.sort((a, b) => b.num - a.num || a.sv - b.sv);
-        }}""")
+        }""")
 
         if episodes:
             logger.info(f"   Got {len(episodes)} episodes for {slug}")
@@ -371,10 +413,7 @@ def get_episodes(page, slug, post_id):
 
 # ── Step 3: Stream extraction via AJAX ────────────────────────────────────────
 def get_stream_url(page, context, ep_info):
-    """
-    Gọi player.php AJAX để lấy stream URL cho episode.
-    Thử lần lượt các server type: tiktik > pro > vip4k > vip4kv2
-    """
+    """Gọi player.php AJAX để lấy stream URL cho episode."""
     post_id = ep_info.get("post_id")
     chapter_st = ep_info.get("ep_slug")
     sv = str(ep_info.get("sv", 1))
@@ -401,7 +440,7 @@ def get_stream_url(page, context, ep_info):
                     "label": f"{stype}-sv{sv}",
                 })
                 logger.info(f"      ✓ Stream [{stream['type']}] via {stype}: {stream['url'][:70]}...")
-                break  # Found working stream, stop trying other types
+                break  # Found working stream
         except Exception as e:
             logger.debug(f"      Error with {stype}: {e}")
             continue
@@ -488,7 +527,7 @@ def build_list_item(movie):
 
 # ── Main ───────────────────────────────────────────────────────────────────────
 def scrape():
-    logger.info("Starting HHPanda to MonPlayer scraper (v2.1)...")
+    logger.info("Starting HHPanda to MonPlayer scraper (v2.2)...")
     logger.info(f"playwright-stealth: {'OK' if HAS_STEALTH else 'NOT FOUND'}")
     logger.info("Stream logic: AJAX player.php → parse iframe/source")
 
@@ -590,7 +629,7 @@ def scrape():
             "source":      CONFIG["BASE_URL"],
             "total_items": len(channels),
             "updated_at":  datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "version":     "2.1"
+            "version":     "2.2"
         }
     }
 
