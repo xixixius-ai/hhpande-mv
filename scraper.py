@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-HHPanda Scraper → MonPlayer JSON (v2.0)
+HHPanda Scraper → MonPlayer JSON (v2.1)
 Chiến lược stream URL:
   1. AJAX player.php → parse iframe/source → lấy m3u8/mp4 thật
   2. Fallback: giữ embed URL nếu không extract được direct stream
@@ -35,7 +35,7 @@ CONFIG = {
     "BASE_URL":     "https://hhpanda.st",
     "OUTPUT_DIR":   "ophim",
     "LIST_FILE":    "ophim.json",
-    "MAX_MOVIES":   10,
+    "MAX_MOVIES":   5,
     "MAX_EPISODES": 5,
     "TIMEOUT_NAV":  30000,
     "TIMEOUT_WAIT": 20000,
@@ -120,7 +120,10 @@ def _fetch_player_ajax(context, post_id: str, chapter_st: str, sv: str, server_t
         full_url = f"{player_url}?{query}"
         
         logger.info(f"      AJAX → {full_url[:100]}...")
-        page.set_extra_http_headers({"Referer": f"{CONFIG['BASE_URL']}/", "X-Requested-With": "XMLHttpRequest"})
+        page.set_extra_http_headers({
+            "Referer": f"{CONFIG['BASE_URL']}/", 
+            "X-Requested-With": "XMLHttpRequest"
+        })
         page.goto(full_url, wait_until="domcontentloaded", timeout=20000)
         
         html = page.content()
@@ -137,30 +140,43 @@ def _parse_stream_from_html(html: str) -> dict | None:
     Parse HTML response từ player.php để extract stream URL.
     Ưu tiên: m3u8 > mp4 > iframe embed.
     """
-    # Tìm iframe src
+    # 1. Tìm iframe src (ưu tiên số 1)
     iframe_match = re.search(r'<iframe[^>]+src=["\']([^"\']+)["\']', html, re.IGNORECASE)
     if iframe_match:
         src = iframe_match.group(1)
-        if src.startswith("//"):
-            src = "https:" + src
-        if ".m3u8" in src:
+        # Handle protocol-relative URL: //streamfree.vip/... → https://...
+        if src.startswith('//'):
+            src = 'https:' + src
+        elif src.startswith('/'):
+            src = 'https://streamfree.vip' + src
+        if '.m3u8' in src:
             return {"url": src, "type": "hls"}
-        elif ".mp4" in src or ".webm" in src:
+        elif any(ext in src for ext in ['.mp4', '.webm']):
             return {"url": src, "type": "mp4"}
         else:
             return {"url": src, "type": "embed"}
     
-    # Tìm <source> tag
-    source_match = re.search(r'<source[^>]+src=["\']([^"\']+\.(m3u8|mp4|webm)[^"\']*)["\']', html, re.IGNORECASE)
+    # 2. Tìm <source> tag (jwplayer, video.js)
+    source_match = re.search(
+        r'<source[^>]+src=["\']([^"\']+\.(m3u8|mp4|webm)[^"\']*)["\']', 
+        html, re.IGNORECASE
+    )
     if source_match:
         src = source_match.group(1)
+        if src.startswith('//'):
+            src = 'https:' + src
         vtype = "hls" if ".m3u8" in src else "mp4"
         return {"url": src, "type": vtype}
     
-    # Tìm file: trong JS config (jwplayer, plyr, v.v.)
-    js_match = re.search(r'''['"]?file['"]?\s*:\s*['"]([^'"]+\.(m3u8|mp4|webm)[^'"]*)['"]''', html, re.IGNORECASE)
+    # 3. Tìm file: trong JS config (plyr, hls.js, custom player)
+    js_match = re.search(
+        r'''['"]?file['"]?\s*:\s*['"]([^'"]+\.(m3u8|mp4|webm)[^'"]*)['"]''', 
+        html, re.IGNORECASE
+    )
     if js_match:
         src = js_match.group(1)
+        if src.startswith('//'):
+            src = 'https:' + src
         vtype = "hls" if ".m3u8" in src else "mp4"
         return {"url": src, "type": vtype}
     
@@ -177,7 +193,6 @@ def get_trending_movies(page):
 
         movies = page.evaluate("""() => {
             const results = [];
-            // Try multiple selectors for hhpanda theme
             const selectors = ['.movie-item', '.halim-item', '.film-item', '#main-contents .item'];
             let items = [];
             for (const sel of selectors) {
@@ -189,7 +204,6 @@ def get_trending_movies(page):
                 const link = item.querySelector('a[href*="/watch-"], a[href*="/the-gioi-"], .film-title a, h3 a');
                 if (!link?.href) continue;
                 const href = link.href;
-                // Extract series slug from episode URL: /watch-{slug}/tap-xxx => {slug}
                 const match = href.match(/\/watch-([^/]+)\//) || href.match(/\/([^/]+)$/);
                 const slug = match ? match[1].replace(/-tap-\d+.*$/, '').replace(/-sv\d+.*$/, '') : '';
                 if (!slug || slug.includes('search') || slug.includes('category')) continue;
@@ -200,7 +214,6 @@ def get_trending_movies(page):
                 const badge = item.querySelector('.tick, .label, .badge, .halim-status')?.innerText.trim() || 'Trending';
                 results.push({ slug, title: title.replace(/Tập\s*\d+.*$/i, '').trim(), thumb, badge });
             }
-            // Deduplicate by slug
             const seen = new Set();
             return results.filter(m => {
                 if (seen.has(m.slug)) return false;
@@ -219,32 +232,38 @@ def get_trending_movies(page):
 def get_series_info_and_latest_ep(page, slug):
     """
     Vào trang episode bất kỳ của series để lấy:
-    - post_id (từ data-post-id)
+    - post_id (từ DoPostInfo script)
     - latest episode URL (tap số cao nhất)
     """
-    # Thử URL pattern: /watch-{slug}/tap-266-sv1.html (episode mẫu)
-    sample_url = f"{CONFIG['BASE_URL']}/watch-{slug}/tap-999-sv1.html"
+    # Dùng episode 1 làm fallback (luôn tồn tại)
+    sample_url = f"{CONFIG['BASE_URL']}/watch-{slug}/tap-1-sv1.html"
     
     try:
         _human_delay(300, 700)
         page.goto(sample_url, wait_until="domcontentloaded", timeout=CONFIG["TIMEOUT_NAV"])
         
-        # Nếu 404, thử redirect đến episode thật gần nhất
+        # Nếu 404, thử redirect đến series page
         if "404" in page.title().lower() or page.url != sample_url:
-            # Parse available episodes từ #halim-list-server
-            pass
+            series_url = f"{CONFIG['BASE_URL']}/{slug}"
+            page.goto(series_url, wait_until="domcontentloaded", timeout=CONFIG["TIMEOUT_NAV"])
         
         _debug_page(page, f"series-{slug}")
         _wait_for_cf(page, "#halim-list-server, .halim-episode", CONFIG["TIMEOUT_WAIT"])
 
         info = page.evaluate(f"""() => {{
-            // Lấy post_id từ script hoặc data attribute
+            // Lấy post_id từ script DoPostInfo (nguồn chính xác nhất)
             let post_id = null;
-            const script = Array.from(document.scripts).find(s => s.textContent.includes('DoPostInfo'));
-            if (script) {{
-                const match = script.textContent.match(/id:\\s*(\\d+)/);
-                if (match) post_id = match[1];
+            const scripts = Array.from(document.scripts);
+            for (const script of scripts) {{
+                if (script.textContent && script.textContent.includes('DoPostInfo')) {{
+                    const match = script.textContent.match(/id:\\s*(\\d+)/);
+                    if (match) {{
+                        post_id = match[1];
+                        break;
+                    }}
+                }}
             }}
+            // Fallback: lấy từ data attribute
             if (!post_id) {{
                 const epLink = document.querySelector('a[data-post-id]');
                 if (epLink) post_id = epLink.getAttribute('data-post-id');
@@ -288,11 +307,10 @@ def get_series_info_and_latest_ep(page, slug):
 def get_episodes(page, slug, post_id):
     """
     Lấy danh sách episodes từ #halim-list-server.
-    Mỗi episode có: name (tap-xxx), url, data-sv, data-post-id.
+    Handle duplicate #listsv-1 IDs cho Vietsub/Thuyết minh.
     """
     try:
-        # Dùng episode URL mẫu để load trang có episode list
-        sample_url = f"{CONFIG['BASE_URL']}/watch-{slug}/tap-999-sv1.html"
+        sample_url = f"{CONFIG['BASE_URL']}/watch-{slug}/tap-1-sv1.html"
         _human_delay(400, 800)
         page.goto(sample_url, wait_until="domcontentloaded", timeout=CONFIG["TIMEOUT_NAV"])
         _wait_for_cf(page, "#halim-list-server", CONFIG["TIMEOUT_WAIT"])
@@ -300,30 +318,42 @@ def get_episodes(page, slug, post_id):
         episodes = page.evaluate(f"""() => {{
             const results = [];
             const seen = new Set();
-            // Lấy từ cả 2 server: Vietsub (sv=1) và Thuyết minh (sv=2)
-            for (const sv of [1, 2]) {{
-                const container = document.querySelector(`#listsv-${{sv}}`);
-                if (!container) continue;
-                const links = container.querySelectorAll('a[data-post-id][data-ep]');
+            
+            // Query từng server container riêng biệt để tránh duplicate ID
+            const serverContainers = document.querySelectorAll('#halim-list-server > div.halim-server');
+            
+            for (const container of serverContainers) {{
+                const serverName = container.querySelector('.halim-server-name')?.innerText || '';
+                const isVietsub = serverName.toLowerCase().includes('vietsub');
+                const defaultSv = isVietsub ? 1 : 2;
+                
+                const links = container.querySelectorAll('ul.halim-list-eps a[data-post-id][data-ep]');
                 for (const a of links) {{
-                    const href = a.href;
+                    const href = a.href || '';
                     const epMatch = href.match(/tap-(\\d+)/);
+                    const svMatch = href.match(/-sv(\\d+)/);
                     if (!epMatch) continue;
+                    
                     const num = parseInt(epMatch[1]);
+                    const sv = svMatch ? parseInt(svMatch[1]) : defaultSv;
                     const key = `${{num}}-sv${{sv}}`;
+                    
                     if (seen.has(key)) continue;
                     seen.add(key);
+                    
                     results.push({{
                         name: `Tap ${{num}}`,
                         num: num,
                         sv: sv,
                         url: href,
                         post_id: a.getAttribute('data-post-id'),
-                        ep_slug: a.getAttribute('data-ep')
+                        ep_slug: a.getAttribute('data-ep'),
+                        title: a.title || `Tập ${{num}}`
                     }});
                 }}
             }}
-            // Sort by episode number desc, then by sv
+            
+            // Sort: episode number desc, then sv asc (Vietsub trước)
             return results.sort((a, b) => b.num - a.num || a.sv - b.sv);
         }}""")
 
@@ -345,8 +375,8 @@ def get_stream_url(page, context, ep_info):
     Gọi player.php AJAX để lấy stream URL cho episode.
     Thử lần lượt các server type: tiktik > pro > vip4k > vip4kv2
     """
-    post_id = ep_info.get("post_id") or ep_info.get("data-post-id")
-    chapter_st = ep_info.get("ep_slug") or ep_info.get("data-ep")
+    post_id = ep_info.get("post_id")
+    chapter_st = ep_info.get("ep_slug")
     sv = str(ep_info.get("sv", 1))
     
     if not post_id or not chapter_st:
@@ -458,7 +488,7 @@ def build_list_item(movie):
 
 # ── Main ───────────────────────────────────────────────────────────────────────
 def scrape():
-    logger.info("Starting HHPanda to MonPlayer scraper (v2.0)...")
+    logger.info("Starting HHPanda to MonPlayer scraper (v2.1)...")
     logger.info(f"playwright-stealth: {'OK' if HAS_STEALTH else 'NOT FOUND'}")
     logger.info("Stream logic: AJAX player.php → parse iframe/source")
 
@@ -560,7 +590,7 @@ def scrape():
             "source":      CONFIG["BASE_URL"],
             "total_items": len(channels),
             "updated_at":  datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "version":     "2.0"
+            "version":     "2.1"
         }
     }
 
