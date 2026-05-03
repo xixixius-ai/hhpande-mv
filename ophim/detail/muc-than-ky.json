@@ -11,10 +11,36 @@
           "streams": [
             {
               "id": "muc-than-ky--0-0",
-              "name": "Tap 80",
+              "name": "Tap 81",
               "stream_links": [
                 {
                   "id": "muc-than-ky--0-0-0",
+                  "name": "TIKTIK SV1",
+                  "type": "embed",
+                  "default": true,
+                  "url": "https://streamfree.vip/embed/vt/HKqC96ks"
+                }
+              ]
+            },
+            {
+              "id": "muc-than-ky--0-1",
+              "name": "Tap 81",
+              "stream_links": [
+                {
+                  "id": "muc-than-ky--0-1-0",
+                  "name": "TIKTIK SV2",
+                  "type": "embed",
+                  "default": true,
+                  "url": "https://streamfree.vip/embed/vt/eH36ZWzO"
+                }
+              ]
+            },
+            {
+              "id": "muc-than-ky--0-2",
+              "name": "Tap 80",
+              "stream_links": [
+                {
+                  "id": "muc-than-ky--0-2-0",
                   "name": "TIKTIK SV1",
                   "type": "embed",
                   "default": true,
@@ -23,11 +49,11 @@
               ]
             },
             {
-              "id": "muc-than-ky--0-1",
+              "id": "muc-than-ky--0-3",
               "name": "Tap 80",
               "stream_links": [
                 {
-                  "id": "muc-than-ky--0-1-0",
+                  "id": "muc-than-ky--0-3-0",
                   "name": "TIKTIK SV2",
                   "type": "embed",
                   "default": true,
@@ -36,41 +62,15 @@
               ]
             },
             {
-              "id": "muc-than-ky--0-2",
-              "name": "Tap 79",
-              "stream_links": [
-                {
-                  "id": "muc-than-ky--0-2-0",
-                  "name": "TIKTIK SV1",
-                  "type": "embed",
-                  "default": true,
-                  "url": "https://streamfree.vip/embed/vt/WLVd76oR"
-                }
-              ]
-            },
-            {
-              "id": "muc-than-ky--0-3",
-              "name": "Tap 79",
-              "stream_links": [
-                {
-                  "id": "muc-than-ky--0-3-0",
-                  "name": "TIKTIK SV2",
-                  "type": "embed",
-                  "default": true,
-                  "url": "https://streamfree.vip/embed/vt/Cl0S3VrY"
-                }
-              ]
-            },
-            {
               "id": "muc-than-ky--0-4",
-              "name": "Tap 78",
+              "name": "Tap 79",
               "stream_links": [
                 {
                   "id": "muc-than-ky--0-4-0",
                   "name": "TIKTIK SV1",
                   "type": "embed",
                   "default": true,
-                  "url": "https://streamfree.vip/embed/vt/ANERlvQF"
+                  "url": "https://streamfree.vip/embed/vt/WLVd76oR"
                 }
               ]
             }
