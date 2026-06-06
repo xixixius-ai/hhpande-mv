@@ -103,29 +103,6 @@
       "enable_detail": true
     },
     {
-      "id": "gia-thien",
-      "name": "Già Thiên",
-      "description": "",
-      "image": {
-        "url": "https://hhpanda.st/wp-content/uploads/2024/10/gia-thien-292-300x450.webp",
-        "type": "cover",
-        "width": 480,
-        "height": 640
-      },
-      "type": "playlist",
-      "display": "text-below",
-      "label": {
-        "text": "FULL HD 4K",
-        "position": "top-left",
-        "color": "#35ba8b",
-        "text_color": "#ffffff"
-      },
-      "remote_data": {
-        "url": "https://raw.githubusercontent.com/xixixius-ai/hhpande-mv/refs/heads/main/ophim/detail/gia-thien.json"
-      },
-      "enable_detail": true
-    },
-    {
       "id": "thon-phe-tinh-khong-phan-2",
       "name": "Thôn Phệ Tinh Không",
       "description": "",
@@ -145,29 +122,6 @@
       },
       "remote_data": {
         "url": "https://raw.githubusercontent.com/xixixius-ai/hhpande-mv/refs/heads/main/ophim/detail/thon-phe-tinh-khong-phan-2.json"
-      },
-      "enable_detail": true
-    },
-    {
-      "id": "pham-nhan-tu-tien",
-      "name": "Phàm Nhân Tu Tiên",
-      "description": "",
-      "image": {
-        "url": "https://hhpanda.st/wp-content/uploads/2024/10/Pham-Nhan-Tu-Tien-300x450.webp",
-        "type": "cover",
-        "width": 480,
-        "height": 640
-      },
-      "type": "playlist",
-      "display": "text-below",
-      "label": {
-        "text": "Full HD",
-        "position": "top-left",
-        "color": "#35ba8b",
-        "text_color": "#ffffff"
-      },
-      "remote_data": {
-        "url": "https://raw.githubusercontent.com/xixixius-ai/hhpande-mv/refs/heads/main/ophim/detail/pham-nhan-tu-tien.json"
       },
       "enable_detail": true
     },
@@ -250,8 +204,8 @@
   ],
   "meta": {
     "source": "https://hhpanda.st",
-    "total_items": 10,
-    "updated_at": "2026-06-06T17:19:31Z",
+    "total_items": 8,
+    "updated_at": "2026-06-06T21:10:37Z",
     "version": "2.2"
   }
 }
