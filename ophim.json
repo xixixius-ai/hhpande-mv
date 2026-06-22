@@ -172,6 +172,29 @@
       "enable_detail": true
     },
     {
+      "id": "dau-la-dai-luc-2-tuyet-the-duong-mon",
+      "name": "Đấu La Đại Lục 2: Tuyệt Thế Đường Môn",
+      "description": "",
+      "image": {
+        "url": "https://hhpanda.st/wp-content/uploads/2024/10/dau-la-dai-luc-2-tuyet-the-duong-mon-210.jpg",
+        "type": "cover",
+        "width": 480,
+        "height": 640
+      },
+      "type": "playlist",
+      "display": "text-below",
+      "label": {
+        "text": "Full HD 4K",
+        "position": "top-left",
+        "color": "#35ba8b",
+        "text_color": "#ffffff"
+      },
+      "remote_data": {
+        "url": "https://raw.githubusercontent.com/xixixius-ai/hhpande-mv/refs/heads/main/ophim/detail/dau-la-dai-luc-2-tuyet-the-duong-mon.json"
+      },
+      "enable_detail": true
+    },
+    {
       "id": "thuong-nguyen-do",
       "name": "Thương Nguyên Đồ",
       "description": "",
@@ -227,8 +250,8 @@
   ],
   "meta": {
     "source": "https://hhpanda.st",
-    "total_items": 9,
-    "updated_at": "2026-06-22T13:41:57Z",
+    "total_items": 10,
+    "updated_at": "2026-06-22T19:35:33Z",
     "version": "2.2"
   }
 }
