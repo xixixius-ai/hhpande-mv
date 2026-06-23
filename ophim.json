@@ -103,98 +103,6 @@
       "enable_detail": true
     },
     {
-      "id": "gia-thien",
-      "name": "Già Thiên",
-      "description": "",
-      "image": {
-        "url": "https://hhpanda.st/wp-content/uploads/2024/10/gia-thien-292-300x450.webp",
-        "type": "cover",
-        "width": 480,
-        "height": 640
-      },
-      "type": "playlist",
-      "display": "text-below",
-      "label": {
-        "text": "FULL HD 4K",
-        "position": "top-left",
-        "color": "#35ba8b",
-        "text_color": "#ffffff"
-      },
-      "remote_data": {
-        "url": "https://raw.githubusercontent.com/xixixius-ai/hhpande-mv/refs/heads/main/ophim/detail/gia-thien.json"
-      },
-      "enable_detail": true
-    },
-    {
-      "id": "pham-nhan-tu-tien",
-      "name": "Phàm Nhân Tu Tiên",
-      "description": "",
-      "image": {
-        "url": "https://hhpanda.st/wp-content/uploads/2024/10/Pham-Nhan-Tu-Tien-300x450.webp",
-        "type": "cover",
-        "width": 480,
-        "height": 640
-      },
-      "type": "playlist",
-      "display": "text-below",
-      "label": {
-        "text": "Full HD",
-        "position": "top-left",
-        "color": "#35ba8b",
-        "text_color": "#ffffff"
-      },
-      "remote_data": {
-        "url": "https://raw.githubusercontent.com/xixixius-ai/hhpande-mv/refs/heads/main/ophim/detail/pham-nhan-tu-tien.json"
-      },
-      "enable_detail": true
-    },
-    {
-      "id": "thon-phe-tinh-khong-phan-2",
-      "name": "Thôn Phệ Tinh Không",
-      "description": "",
-      "image": {
-        "url": "https://hhpanda.st/wp-content/uploads/2024/10/thon-phe-tinh-khong-phan-2-295-300x450.webp",
-        "type": "cover",
-        "width": 480,
-        "height": 640
-      },
-      "type": "playlist",
-      "display": "text-below",
-      "label": {
-        "text": "Full HD",
-        "position": "top-left",
-        "color": "#35ba8b",
-        "text_color": "#ffffff"
-      },
-      "remote_data": {
-        "url": "https://raw.githubusercontent.com/xixixius-ai/hhpande-mv/refs/heads/main/ophim/detail/thon-phe-tinh-khong-phan-2.json"
-      },
-      "enable_detail": true
-    },
-    {
-      "id": "dau-la-dai-luc-2-tuyet-the-duong-mon",
-      "name": "Đấu La Đại Lục 2: Tuyệt Thế Đường Môn",
-      "description": "",
-      "image": {
-        "url": "https://hhpanda.st/wp-content/uploads/2024/10/dau-la-dai-luc-2-tuyet-the-duong-mon-210.jpg",
-        "type": "cover",
-        "width": 480,
-        "height": 640
-      },
-      "type": "playlist",
-      "display": "text-below",
-      "label": {
-        "text": "Full HD 4K",
-        "position": "top-left",
-        "color": "#35ba8b",
-        "text_color": "#ffffff"
-      },
-      "remote_data": {
-        "url": "https://raw.githubusercontent.com/xixixius-ai/hhpande-mv/refs/heads/main/ophim/detail/dau-la-dai-luc-2-tuyet-the-duong-mon.json"
-      },
-      "enable_detail": true
-    },
-    {
       "id": "thuong-nguyen-do",
       "name": "Thương Nguyên Đồ",
       "description": "",
@@ -250,8 +158,8 @@
   ],
   "meta": {
     "source": "https://hhpanda.st",
-    "total_items": 10,
-    "updated_at": "2026-06-23T03:56:19Z",
+    "total_items": 6,
+    "updated_at": "2026-06-23T07:56:28Z",
     "version": "2.2"
   }
 }
