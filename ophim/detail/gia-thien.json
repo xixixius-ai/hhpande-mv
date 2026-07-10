@@ -41,10 +41,10 @@
               "stream_links": [
                 {
                   "id": "gia-thien--0-2-0",
-                  "name": "TIKTIK SV1",
+                  "name": "PRO SV1",
                   "type": "embed",
                   "default": true,
-                  "url": "https://streamfree.vip/embed/vt/eBe0eDAU"
+                  "url": "https://streamfree.vip/embed/v/eBe0eDAU"
                 }
               ]
             },
@@ -54,10 +54,10 @@
               "stream_links": [
                 {
                   "id": "gia-thien--0-3-0",
-                  "name": "TIKTIK SV2",
+                  "name": "PRO SV2",
                   "type": "embed",
                   "default": true,
-                  "url": "https://streamfree.vip/embed/vt/QmqVtDoC"
+                  "url": "https://streamfree.vip/embed/v/QmqVtDoC"
                 }
               ]
             },
