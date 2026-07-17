@@ -24,14 +24,14 @@
             },
             {
               "id": "dau-pha-thuong-khung-phan-5--0-1",
-              "name": "Tap 207",
+              "name": "Tap 206",
               "stream_links": [
                 {
                   "id": "dau-pha-thuong-khung-phan-5--0-1-0",
-                  "name": "TIKTIK SV2",
+                  "name": "PRO SV1",
                   "type": "embed",
                   "default": true,
-                  "url": "https://streamfree.vip/embed/vt/5m0GzVzZ"
+                  "url": "https://streamfree.vip/embed/v/QZrklmta"
                 }
               ]
             },
@@ -41,19 +41,6 @@
               "stream_links": [
                 {
                   "id": "dau-pha-thuong-khung-phan-5--0-2-0",
-                  "name": "TIKTIK SV1",
-                  "type": "embed",
-                  "default": true,
-                  "url": "https://streamfree.vip/embed/vt/QZrklmta"
-                }
-              ]
-            },
-            {
-              "id": "dau-pha-thuong-khung-phan-5--0-3",
-              "name": "Tap 206",
-              "stream_links": [
-                {
-                  "id": "dau-pha-thuong-khung-phan-5--0-3-0",
                   "name": "TIKTIK SV2",
                   "type": "embed",
                   "default": true,
@@ -62,15 +49,15 @@
               ]
             },
             {
-              "id": "dau-pha-thuong-khung-phan-5--0-4",
+              "id": "dau-pha-thuong-khung-phan-5--0-3",
               "name": "Tap 205",
               "stream_links": [
                 {
-                  "id": "dau-pha-thuong-khung-phan-5--0-4-0",
-                  "name": "TIKTIK SV1",
+                  "id": "dau-pha-thuong-khung-phan-5--0-3-0",
+                  "name": "VIP4K SV1",
                   "type": "embed",
                   "default": true,
-                  "url": "https://streamfree.vip/embed/vt/Y1tCec7t"
+                  "url": "https://streamfree.vip/embed/vt/3iBKpZ6k"
                 }
               ]
             }
