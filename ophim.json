@@ -193,6 +193,52 @@
         "url": "https://raw.githubusercontent.com/xixixius-ai/hhpande-mv/refs/heads/main/ophim/detail/dau-la-dai-luc-2-tuyet-the-duong-mon.json"
       },
       "enable_detail": true
+    },
+    {
+      "id": "thuong-nguyen-do",
+      "name": "Thương Nguyên Đồ",
+      "description": "",
+      "image": {
+        "url": "https://hhpanda.st/wp-content/uploads/2024/10/photo_2026-03-13_09-30-47-300x450.webp",
+        "type": "cover",
+        "width": 480,
+        "height": 640
+      },
+      "type": "playlist",
+      "display": "text-below",
+      "label": {
+        "text": "Full HD",
+        "position": "top-left",
+        "color": "#35ba8b",
+        "text_color": "#ffffff"
+      },
+      "remote_data": {
+        "url": "https://raw.githubusercontent.com/xixixius-ai/hhpande-mv/refs/heads/main/ophim/detail/thuong-nguyen-do.json"
+      },
+      "enable_detail": true
+    },
+    {
+      "id": "than-an-vuong-toa",
+      "name": "Thần Ấn Vương Toạ",
+      "description": "",
+      "image": {
+        "url": "https://hhpanda.st/wp-content/uploads/2024/10/than-an-vuong-toa-283-300x450.webp",
+        "type": "cover",
+        "width": 480,
+        "height": 640
+      },
+      "type": "playlist",
+      "display": "text-below",
+      "label": {
+        "text": "FULL HD 4K",
+        "position": "top-left",
+        "color": "#35ba8b",
+        "text_color": "#ffffff"
+      },
+      "remote_data": {
+        "url": "https://raw.githubusercontent.com/xixixius-ai/hhpande-mv/refs/heads/main/ophim/detail/than-an-vuong-toa.json"
+      },
+      "enable_detail": true
     }
   ],
   "sorts": [
@@ -204,8 +250,8 @@
   ],
   "meta": {
     "source": "https://hhpanda.st",
-    "total_items": 8,
-    "updated_at": "2026-07-17T17:28:07Z",
+    "total_items": 10,
+    "updated_at": "2026-07-17T21:00:52Z",
     "version": "2.2"
   }
 }
