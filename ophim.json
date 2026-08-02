@@ -80,6 +80,52 @@
       "enable_detail": true
     },
     {
+      "id": "the-gioi-hoan-my",
+      "name": "Thế Giới Hoàn Mỹ",
+      "description": "",
+      "image": {
+        "url": "https://hhpanda.st/wp-content/uploads/2024/10/the-gioi-hoan-my-256-300x450.webp",
+        "type": "cover",
+        "width": 480,
+        "height": 640
+      },
+      "type": "playlist",
+      "display": "text-below",
+      "label": {
+        "text": "Full HD",
+        "position": "top-left",
+        "color": "#35ba8b",
+        "text_color": "#ffffff"
+      },
+      "remote_data": {
+        "url": "https://raw.githubusercontent.com/xixixius-ai/hhpande-mv/refs/heads/main/ophim/detail/the-gioi-hoan-my.json"
+      },
+      "enable_detail": true
+    },
+    {
+      "id": "pham-nhan-tu-tien",
+      "name": "Phàm Nhân Tu Tiên",
+      "description": "",
+      "image": {
+        "url": "https://hhpanda.st/wp-content/uploads/2024/10/Pham-Nhan-Tu-Tien-300x450.webp",
+        "type": "cover",
+        "width": 480,
+        "height": 640
+      },
+      "type": "playlist",
+      "display": "text-below",
+      "label": {
+        "text": "Full HD",
+        "position": "top-left",
+        "color": "#35ba8b",
+        "text_color": "#ffffff"
+      },
+      "remote_data": {
+        "url": "https://raw.githubusercontent.com/xixixius-ai/hhpande-mv/refs/heads/main/ophim/detail/pham-nhan-tu-tien.json"
+      },
+      "enable_detail": true
+    },
+    {
       "id": "gia-thien",
       "name": "Già Thiên",
       "description": "",
@@ -149,6 +195,29 @@
       "enable_detail": true
     },
     {
+      "id": "thuong-nguyen-do",
+      "name": "Thương Nguyên Đồ",
+      "description": "",
+      "image": {
+        "url": "https://hhpanda.st/wp-content/uploads/2024/10/photo_2026-03-13_09-30-47-300x450.webp",
+        "type": "cover",
+        "width": 480,
+        "height": 640
+      },
+      "type": "playlist",
+      "display": "text-below",
+      "label": {
+        "text": "Full HD",
+        "position": "top-left",
+        "color": "#35ba8b",
+        "text_color": "#ffffff"
+      },
+      "remote_data": {
+        "url": "https://raw.githubusercontent.com/xixixius-ai/hhpande-mv/refs/heads/main/ophim/detail/thuong-nguyen-do.json"
+      },
+      "enable_detail": true
+    },
+    {
       "id": "than-an-vuong-toa",
       "name": "Thần Ấn Vương Toạ",
       "description": "",
@@ -181,8 +250,8 @@
   ],
   "meta": {
     "source": "https://hhpanda.st",
-    "total_items": 7,
-    "updated_at": "2026-08-02T13:37:48Z",
+    "total_items": 10,
+    "updated_at": "2026-08-02T17:05:14Z",
     "version": "2.2"
   }
 }
