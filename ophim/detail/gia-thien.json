@@ -24,14 +24,14 @@
             },
             {
               "id": "gia-thien--0-1",
-              "name": "Tap 173",
+              "name": "Tap 174",
               "stream_links": [
                 {
                   "id": "gia-thien--0-1-0",
-                  "name": "TIKTIK SV1",
+                  "name": "TIKTIK SV2",
                   "type": "embed",
                   "default": true,
-                  "url": "https://streamfree.vip/embed/vt/BoV9YYD9"
+                  "url": "https://streamfree.vip/embed/vt/d79DVWP8"
                 }
               ]
             },
@@ -41,23 +41,23 @@
               "stream_links": [
                 {
                   "id": "gia-thien--0-2-0",
-                  "name": "TIKTIK SV2",
+                  "name": "TIKTIK SV1",
                   "type": "embed",
                   "default": true,
-                  "url": "https://streamfree.vip/embed/vt/GhHgoSyO"
+                  "url": "https://streamfree.vip/embed/vt/BoV9YYD9"
                 }
               ]
             },
             {
               "id": "gia-thien--0-3",
-              "name": "Tap 172",
+              "name": "Tap 173",
               "stream_links": [
                 {
                   "id": "gia-thien--0-3-0",
-                  "name": "TIKTIK SV1",
+                  "name": "TIKTIK SV2",
                   "type": "embed",
                   "default": true,
-                  "url": "https://streamfree.vip/embed/vt/tXhWE43B"
+                  "url": "https://streamfree.vip/embed/vt/GhHgoSyO"
                 }
               ]
             },
@@ -67,10 +67,10 @@
               "stream_links": [
                 {
                   "id": "gia-thien--0-4-0",
-                  "name": "TIKTIK SV2",
+                  "name": "TIKTIK SV1",
                   "type": "embed",
                   "default": true,
-                  "url": "https://streamfree.vip/embed/vt/2sZQrceK"
+                  "url": "https://streamfree.vip/embed/vt/tXhWE43B"
                 }
               ]
             }
