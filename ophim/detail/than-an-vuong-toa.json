@@ -11,49 +11,23 @@
           "streams": [
             {
               "id": "than-an-vuong-toa--0-0",
-              "name": "Tap 208",
+              "name": "Tap 207",
               "stream_links": [
                 {
                   "id": "than-an-vuong-toa--0-0-0",
-                  "name": "TIKTIK SV1",
+                  "name": "PRO SV1",
                   "type": "embed",
                   "default": true,
-                  "url": "https://streamfree.vip/embed/vt/KG84iM23"
+                  "url": "https://streamfree.vip/embed/v/GFcAdqCG"
                 }
               ]
             },
             {
               "id": "than-an-vuong-toa--0-1",
-              "name": "Tap 208",
+              "name": "Tap 207",
               "stream_links": [
                 {
                   "id": "than-an-vuong-toa--0-1-0",
-                  "name": "TIKTIK SV2",
-                  "type": "embed",
-                  "default": true,
-                  "url": "https://streamfree.vip/embed/vt/3st5aqfb"
-                }
-              ]
-            },
-            {
-              "id": "than-an-vuong-toa--0-2",
-              "name": "Tap 207",
-              "stream_links": [
-                {
-                  "id": "than-an-vuong-toa--0-2-0",
-                  "name": "TIKTIK SV1",
-                  "type": "embed",
-                  "default": true,
-                  "url": "https://streamfree.vip/embed/vt/GFcAdqCG"
-                }
-              ]
-            },
-            {
-              "id": "than-an-vuong-toa--0-3",
-              "name": "Tap 207",
-              "stream_links": [
-                {
-                  "id": "than-an-vuong-toa--0-3-0",
                   "name": "TIKTIK SV2",
                   "type": "embed",
                   "default": true,
@@ -62,15 +36,15 @@
               ]
             },
             {
-              "id": "than-an-vuong-toa--0-4",
+              "id": "than-an-vuong-toa--0-2",
               "name": "Tap 206",
               "stream_links": [
                 {
-                  "id": "than-an-vuong-toa--0-4-0",
-                  "name": "TIKTIK SV1",
+                  "id": "than-an-vuong-toa--0-2-0",
+                  "name": "PRO SV1",
                   "type": "embed",
                   "default": true,
-                  "url": "https://streamfree.vip/embed/vt/nbJynxTq"
+                  "url": "https://streamfree.vip/embed/v/nbJynxTq"
                 }
               ]
             }
