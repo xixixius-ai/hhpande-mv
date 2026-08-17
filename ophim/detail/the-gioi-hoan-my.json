@@ -15,10 +15,10 @@
               "stream_links": [
                 {
                   "id": "the-gioi-hoan-my--0-0-0",
-                  "name": "PRO SV1",
+                  "name": "TIKTIK SV1",
                   "type": "embed",
                   "default": true,
-                  "url": "https://streamfree.vip/embed/v/1Ql54WxE"
+                  "url": "https://streamfree.vip/embed/vt/1Ql54WxE"
                 }
               ]
             },
@@ -50,10 +50,23 @@
             },
             {
               "id": "the-gioi-hoan-my--0-3",
-              "name": "Tap 280",
+              "name": "Tap 281",
               "stream_links": [
                 {
                   "id": "the-gioi-hoan-my--0-3-0",
+                  "name": "TIKTIK SV2",
+                  "type": "embed",
+                  "default": true,
+                  "url": "https://streamfree.vip/embed/vt/iFrgv9rg"
+                }
+              ]
+            },
+            {
+              "id": "the-gioi-hoan-my--0-4",
+              "name": "Tap 280",
+              "stream_links": [
+                {
+                  "id": "the-gioi-hoan-my--0-4-0",
                   "name": "TIKTIK SV1",
                   "type": "embed",
                   "default": true,
