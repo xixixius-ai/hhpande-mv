@@ -15,10 +15,10 @@
               "stream_links": [
                 {
                   "id": "gia-thien--0-0-0",
-                  "name": "TIKTIK SV1",
+                  "name": "PRO SV1",
                   "type": "embed",
                   "default": true,
-                  "url": "https://streamfree.vip/embed/vt/z50pamlc"
+                  "url": "https://streamfree.vip/embed/v/z50pamlc"
                 }
               ]
             },
@@ -28,10 +28,10 @@
               "stream_links": [
                 {
                   "id": "gia-thien--0-1-0",
-                  "name": "TIKTIK SV2",
+                  "name": "VIP4K SV2",
                   "type": "embed",
                   "default": true,
-                  "url": "https://streamfree.vip/embed/vt/NLkstAXk"
+                  "url": "https://streamfree.vip/embed/vt/AbFvvi61"
                 }
               ]
             },
@@ -41,19 +41,32 @@
               "stream_links": [
                 {
                   "id": "gia-thien--0-2-0",
-                  "name": "VIP4K SV2",
+                  "name": "VIP4K SV1",
                   "type": "embed",
                   "default": true,
-                  "url": "https://streamfree.vip/embed/vt/wMT4T5py"
+                  "url": "https://streamfree.vip/embed/vt/LQ1ADdl4"
                 }
               ]
             },
             {
               "id": "gia-thien--0-3",
-              "name": "Tap 173",
+              "name": "Tap 174",
               "stream_links": [
                 {
                   "id": "gia-thien--0-3-0",
+                  "name": "TIKTIK SV2",
+                  "type": "embed",
+                  "default": true,
+                  "url": "https://streamfree.vip/embed/vt/d79DVWP8"
+                }
+              ]
+            },
+            {
+              "id": "gia-thien--0-4",
+              "name": "Tap 173",
+              "stream_links": [
+                {
+                  "id": "gia-thien--0-4-0",
                   "name": "TIKTIK SV1",
                   "type": "embed",
                   "default": true,

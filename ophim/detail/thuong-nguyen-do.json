@@ -54,10 +54,10 @@
               "stream_links": [
                 {
                   "id": "thuong-nguyen-do--0-3-0",
-                  "name": "TIKTIK SV2",
+                  "name": "PRO SV2",
                   "type": "embed",
                   "default": true,
-                  "url": "https://streamfree.vip/embed/vt/v0aGbTJN"
+                  "url": "https://streamfree.vip/embed/v/v0aGbTJN"
                 }
               ]
             },
@@ -67,10 +67,10 @@
               "stream_links": [
                 {
                   "id": "thuong-nguyen-do--0-4-0",
-                  "name": "PRO SV1",
+                  "name": "TIKTIK SV1",
                   "type": "embed",
                   "default": true,
-                  "url": "https://streamfree.vip/embed/v/owA0VruF"
+                  "url": "https://streamfree.vip/embed/vt/owA0VruF"
                 }
               ]
             }
