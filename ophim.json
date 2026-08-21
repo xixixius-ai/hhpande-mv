@@ -149,6 +149,29 @@
       "enable_detail": true
     },
     {
+      "id": "thon-phe-tinh-khong-phan-2",
+      "name": "Thôn Phệ Tinh Không",
+      "description": "",
+      "image": {
+        "url": "https://hhpanda.st/wp-content/uploads/2024/10/thon-phe-tinh-khong-phan-2-295-300x450.webp",
+        "type": "cover",
+        "width": 480,
+        "height": 640
+      },
+      "type": "playlist",
+      "display": "text-below",
+      "label": {
+        "text": "Full HD",
+        "position": "top-left",
+        "color": "#35ba8b",
+        "text_color": "#ffffff"
+      },
+      "remote_data": {
+        "url": "https://raw.githubusercontent.com/xixixius-ai/hhpande-mv/refs/heads/main/ophim/detail/thon-phe-tinh-khong-phan-2.json"
+      },
+      "enable_detail": true
+    },
+    {
       "id": "dau-la-dai-luc-2-tuyet-the-duong-mon",
       "name": "Đấu La Đại Lục 2: Tuyệt Thế Đường Môn",
       "description": "",
@@ -227,8 +250,8 @@
   ],
   "meta": {
     "source": "https://hhpanda.st",
-    "total_items": 9,
-    "updated_at": "2026-08-21T01:38:44Z",
+    "total_items": 10,
+    "updated_at": "2026-08-21T04:43:06Z",
     "version": "2.2"
   }
 }
