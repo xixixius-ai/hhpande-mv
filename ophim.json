@@ -218,11 +218,11 @@
       "enable_detail": true
     },
     {
-      "id": "than-an-vuong-toa",
-      "name": "Thần Ấn Vương Toạ",
+      "id": "quang-am-chi-ngoai",
+      "name": "Quang Âm Chi Ngoại",
       "description": "",
       "image": {
-        "url": "https://hhpanda.st/wp-content/uploads/2024/10/than-an-vuong-toa-283-300x450.webp",
+        "url": "https://hhpanda.st/wp-content/uploads/2025/12/Quang-Am-Chi-Ngoai-1-300x450.webp",
         "type": "cover",
         "width": 480,
         "height": 640
@@ -230,13 +230,13 @@
       "type": "playlist",
       "display": "text-below",
       "label": {
-        "text": "FULL HD 4K",
+        "text": "Full HD 4K",
         "position": "top-left",
         "color": "#35ba8b",
         "text_color": "#ffffff"
       },
       "remote_data": {
-        "url": "https://raw.githubusercontent.com/xixixius-ai/hhpande-mv/refs/heads/main/ophim/detail/than-an-vuong-toa.json"
+        "url": "https://raw.githubusercontent.com/xixixius-ai/hhpande-mv/refs/heads/main/ophim/detail/quang-am-chi-ngoai.json"
       },
       "enable_detail": true
     }
@@ -251,7 +251,7 @@
   "meta": {
     "source": "https://hhpanda.st",
     "total_items": 10,
-    "updated_at": "2026-08-31T04:38:17Z",
+    "updated_at": "2026-08-31T16:00:22Z",
     "version": "2.2"
   }
 }
