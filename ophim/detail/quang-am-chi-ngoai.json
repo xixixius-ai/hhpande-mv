@@ -11,10 +11,36 @@
           "streams": [
             {
               "id": "quang-am-chi-ngoai--0-0",
-              "name": "Tap 37",
+              "name": "Tap 38",
               "stream_links": [
                 {
                   "id": "quang-am-chi-ngoai--0-0-0",
+                  "name": "TIKTIK SV1",
+                  "type": "embed",
+                  "default": true,
+                  "url": "https://streamfree.vip/embed/vt/Qn26ZRSX"
+                }
+              ]
+            },
+            {
+              "id": "quang-am-chi-ngoai--0-1",
+              "name": "Tap 38",
+              "stream_links": [
+                {
+                  "id": "quang-am-chi-ngoai--0-1-0",
+                  "name": "TIKTIK SV2",
+                  "type": "embed",
+                  "default": true,
+                  "url": "https://streamfree.vip/embed/vt/bdPRG4Ip"
+                }
+              ]
+            },
+            {
+              "id": "quang-am-chi-ngoai--0-2",
+              "name": "Tap 37",
+              "stream_links": [
+                {
+                  "id": "quang-am-chi-ngoai--0-2-0",
                   "name": "TIKTIK SV1",
                   "type": "embed",
                   "default": true,
@@ -23,11 +49,11 @@
               ]
             },
             {
-              "id": "quang-am-chi-ngoai--0-1",
+              "id": "quang-am-chi-ngoai--0-3",
               "name": "Tap 37",
               "stream_links": [
                 {
-                  "id": "quang-am-chi-ngoai--0-1-0",
+                  "id": "quang-am-chi-ngoai--0-3-0",
                   "name": "TIKTIK SV2",
                   "type": "embed",
                   "default": true,
@@ -36,41 +62,15 @@
               ]
             },
             {
-              "id": "quang-am-chi-ngoai--0-2",
-              "name": "Tap 36",
-              "stream_links": [
-                {
-                  "id": "quang-am-chi-ngoai--0-2-0",
-                  "name": "TIKTIK SV1",
-                  "type": "embed",
-                  "default": true,
-                  "url": "https://streamfree.vip/embed/vt/Q6Xgpqn6"
-                }
-              ]
-            },
-            {
-              "id": "quang-am-chi-ngoai--0-3",
-              "name": "Tap 36",
-              "stream_links": [
-                {
-                  "id": "quang-am-chi-ngoai--0-3-0",
-                  "name": "TIKTIK SV2",
-                  "type": "embed",
-                  "default": true,
-                  "url": "https://streamfree.vip/embed/vt/IoXGl1HN"
-                }
-              ]
-            },
-            {
               "id": "quang-am-chi-ngoai--0-4",
-              "name": "Tap 35",
+              "name": "Tap 36",
               "stream_links": [
                 {
                   "id": "quang-am-chi-ngoai--0-4-0",
                   "name": "TIKTIK SV1",
                   "type": "embed",
                   "default": true,
-                  "url": "https://streamfree.vip/embed/vt/gBxwM0yz"
+                  "url": "https://streamfree.vip/embed/vt/Q6Xgpqn6"
                 }
               ]
             }
